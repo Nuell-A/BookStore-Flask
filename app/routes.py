@@ -11,3 +11,11 @@ def index():
         "search_results": search_results
     }
     return render_template('home.html', context=context)
+
+@app.route('/cart')
+def cart():
+    items_in_cart = ["Lion King", "Spirit of the Stallion", "Suuuppppperrrrr long name for testing purposes"]
+    context = {
+        "items_in_cart": items_in_cart
+    }
+    return render_template('cart.html', context=context)

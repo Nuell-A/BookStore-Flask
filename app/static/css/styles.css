@@ -1,0 +1,23 @@
+.card {
+    width: 90%;
+    background-color: #52B69A;
+    border: white solid 0.5px
+}
+
+.btn {
+    background-color: #76C893;
+}
+
+.navbar {
+    background-color: #1f212a;
+    border-bottom: 1px solid rgb(66, 66, 66);
+}
+
+.add-to-cart-btn {
+    height: 50%;
+}
+
+body {
+    background-color: #2d303e;
+    color: white;
+}

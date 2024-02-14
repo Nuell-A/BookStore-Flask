@@ -5,8 +5,8 @@
 {% block content %}
     <main class="container mt-3">
         <form action="#" class="search-form row justify-content-center" method="GET">
-            <input type="text" class="col-md-6" name="search" placeholder="Search for books...">
-            <button type="submit" class="col-md-2 col-sm-2 ms-1">Search</button>
+            <input type="text" class="search-field col-md-6" name="search" placeholder="Search for books...">
+            <button type="submit" class="btn btn-light btn-sm col-md-2 col-sm-2 ms-1">Search</button>
         </form>
         <div class="search-results mt-3">
             {% if context.search_results %}
@@ -14,10 +14,13 @@
                 <div class="d-flex justify-content-center">
                     <ul class="list-group">
                         {% for result in context.search_results %}
-                            <div class="card list-group-item mt-1 mb-2">
-                                <h6 class="card-title">{{ result }}</h6>
-                                <p class="card-text text-secondary">Author</p>
-                                <p class="card-text">Description of book</p>
+                            <div class="d-flex justify-content-between">
+                                <div class="card list-group-item mt-1 mb-2">
+                                    <h6 class="card-title">{{ result }}</h6>
+                                    <p class="card-text text-secondary">Author</p>
+                                    <p class="card-text">Description of book</p>
+                                </div>
+                                <button class="btn btn-light btn-sm add-to-cart-btn ms-1 mt-4">Add to Cart</button>
                             </div>
                         {% endfor %}
                     </ul>

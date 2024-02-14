@@ -1,5 +1,5 @@
 ## Book Store
-This is a web development project for a book store. It will be a response webpage created using Flask.
+This is a web development project for a book store. It will be a responsive webpage created using Flask.
 ### Key Components
 - User authentication
 - Database for storage/handling
