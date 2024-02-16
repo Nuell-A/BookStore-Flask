@@ -1,6 +1,8 @@
-from models import Book, Author, User, Checkout
-from . import db
+from . import db, app
+from .models import Book, Author, User, Checkout
 from datetime import datetime
+
+app.app_context().push()
 
 def createBook(title: str, author_name: str, **kwargs):
     '''Checks if author exists. If author doesn't exists, it will create
@@ -20,20 +22,22 @@ def createBook(title: str, author_name: str, **kwargs):
     # I'm not sure of description and is_out were passed.
     book = Book(title=title, author_id=author.id, description=description, is_out=is_out)
     db.session.add(book)
-    db.commit()
+    db.session.commit()
+
+    print("Book entry created.")
 
 def createAuthor(name: str):
     '''Creates author'''
     author = Author(name=name)
     db.session.add(author)
-    db.commit()
+    db.session.commit()
 
 def createUser(name: str, plaintext_pwrd: str):
     '''Creates user and set password'''
     user = User(name=name)
     user.password = plaintext_pwrd
     db.session.add(user)
-    db.commit()
+    db.session.commit()
 
 def createCheckout(user_name: str, book_title: str):
     '''Sets checkout date and grabs instances of User and Book for ID. Adds it'''
@@ -43,4 +47,7 @@ def createCheckout(user_name: str, book_title: str):
 
     checkout = Checkout(user_id=user.id, book_id=book.id, checkout_date=checkout_date)
     db.session.add(checkout)
-    db.commit()
+    db.session.commit()
+
+
+createAuthor("Name")

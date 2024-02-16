@@ -1,12 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-import os
-import sys
-current_dir = os.path.dirname(os.path.realpath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
+import os, sys
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
 import config
+
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -17,9 +16,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress SQLAlchemy depr
 
 # Initialize SQLAlchemy extension
 db = SQLAlchemy(app)
-col = db.Column
-string = db.String
-integer = db.Integer
 
 # Import routes and models (to avoid circular imports)
 from app import routes, models, controller

@@ -1,6 +1,6 @@
-from . import db, col, string, integer
 from passlib.context import CryptContext
 from sqlalchemy.ext.hybrid import hybrid_property
+from . import db
 
 class Book(db.Model):
     __tablename__ = "books"
@@ -49,11 +49,11 @@ class User(db.Model):
 
 class Checkout(db.Model):
     __tablename__ = "checkouts"
-    checkout_id = col(integer, primary_key=True)
-    user_id = col(integer, db.ForeignKey("users.user_id"), nullable=False)
-    book_id = col(integer, db.ForeignKey("books.book_id"), nullable=False)
-    checkout_date = col(db.Date, nullable=False)
-    return_date = col(db.Date, nullable=True)
+    checkout_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey("books.book_id"), nullable=False)
+    checkout_date = db.Column(db.Date, nullable=False)
+    return_date = db.Column(db.Date, nullable=True)
 
     def __repr__(self) -> str:
         return f"Checkout('{self.user_id}', '{self.book_id}', '{self.checkout_date}', '{self.return_date}')"
