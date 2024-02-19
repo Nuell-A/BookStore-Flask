@@ -9,6 +9,7 @@ import config
 
 # Initialize Flask application
 app = Flask(__name__)
+app.secret_key = config.app_secret_key
 
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{config.sql_username}:{config.sql_pass}@localhost/{config.sql_db_name}'

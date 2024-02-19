@@ -1,6 +1,8 @@
 from passlib.context import CryptContext
 from sqlalchemy.ext.hybrid import hybrid_property
-from . import db
+from . import db, app
+
+app.app_context().push()
 
 class Book(db.Model):
     __tablename__ = "books"
@@ -57,3 +59,5 @@ class Checkout(db.Model):
 
     def __repr__(self) -> str:
         return f"Checkout('{self.user_id}', '{self.book_id}', '{self.checkout_date}', '{self.return_date}')"
+    
+db.create_all()

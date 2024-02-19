@@ -1,6 +1,7 @@
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, url_for, flash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from . import app
-# Import models
+from . import controller
 
 @app.route('/', methods=['GET'])
 def index():
@@ -19,3 +20,11 @@ def cart():
         "items_in_cart": items_in_cart
     }
     return render_template('cart.html', context=context)
+
+@app.route('/account')
+def account():
+    return render_template('account.html')
+
+@app.route('/account/create')
+def accountCreate():
+    return render_template('account_create.html')

@@ -48,6 +48,3 @@ def createCheckout(user_name: str, book_title: str):
     checkout = Checkout(user_id=user.id, book_id=book.id, checkout_date=checkout_date)
     db.session.add(checkout)
     db.session.commit()
-
-
-createAuthor("Name")

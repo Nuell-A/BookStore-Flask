@@ -7,6 +7,13 @@
     height: 10%;
     margin-bottom: 5rem;
 }
+.login {
+    margin-left: 10rem;
+}
+
+.create-account {
+    margin-left: 10rem;
+ }
 
 .add-to-cart-btn {
     height: 50%;
