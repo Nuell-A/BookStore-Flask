@@ -3,6 +3,14 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from . import app
 from . import controller
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+# Mock DB while I migrate SQL database to server (instead of laptop).
+users = {
+    "nuell01@test.com": {"email": "nuell01@test.com", "password": "password1"},
+    "nuell02@test.com": {"email": "nuell02@test.com", "password": "password2"},
+}
+
 @app.route('/', methods=['GET'])
 def index():
     search = request.args.get('search')
@@ -21,10 +29,32 @@ def cart():
     }
     return render_template('cart.html', context=context)
 
-@app.route('/account')
+class User(UserMixin):
+    def __init__(self, email):
+        self.id = email
+
+@login_manager.user_loader
+def loadUser(user_id):
+    return User(user_id)
+        
+@app.route('/account', methods=['GET', 'POST'])
 def account():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        user = users.get(email)
+        if user and user['password'] == password:
+            login_user(User(email))
+            flash("Logged in successfully.")
+            return redirect(url_for('profile'))
+        
     return render_template('account.html')
 
 @app.route('/account/create')
 def accountCreate():
+    return render_template('account_create.html')
+
+@app.route('/profile')
+def profile():
     return render_template('account_create.html')

@@ -7,17 +7,17 @@
         <div class="row justify-content-center">
             <div class="col-5 col-lg-4 col-md-4 mt-5 login">
                 <h2>Login or create an account.</h2>
-                <form action="#">
+                <form action="{{ url_for('account') }}" method="post">
                     <div class="mb-3">
                       <label for="input_email" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="input_email" aria-describedby="emailHelp">
+                      <input type="email" name="email" class="form-control" id="input_email" aria-describedby="emailHelp">
                       <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3">
                       <label for="input_password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="input_password">
+                      <input type="password" name="password" class="form-control" id="input_password">
                     </div>
-                    <button type="submit" class="btn btn-light">Submit</button>
+                    <button type="submit" class="btn btn-light">Login</button>
                   </form>
             </div>
             <div class="col-4 col-lg-3 col-md-3 mt-5 me-5 create-account">

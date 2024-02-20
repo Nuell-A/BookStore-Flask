@@ -1,1 +1,25 @@
 {% extends "base.html" %}
+
+{% block title %} Create an Account {% endblock %}
+
+{% block content %}
+    <div class="contain">
+        <div class="row justify-content-center">
+            <div class="col-5 col-lg-4 col-md-4 mt-5 login">
+                <h2>Create Your Account</h2>
+                <form action="#">
+                    <div class="mb-3">
+                      <label for="input_email" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="input_email" aria-describedby="emailHelp">
+                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="input_password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="input_password">
+                    </div>
+                    <button type="submit" class="btn btn-light">Create</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
