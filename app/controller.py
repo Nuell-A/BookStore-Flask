@@ -39,6 +39,16 @@ def createUser(name: str, plaintext_pwrd: str):
     db.session.add(user)
     db.session.commit()
 
+def checkUser(email: str, plaintext_pwrd: str):
+    user = User.query.filter_by(name=email).first()
+    if not user:
+        return f"No user account for {email} found."
+    
+    if user.verifyPassword(plaintext_pwrd):
+        return "Successfully logged in."
+    else:
+        return "Check credentials and try again."
+
 def createCheckout(user_name: str, book_title: str):
     '''Sets checkout date and grabs instances of User and Book for ID. Adds it'''
     checkout_date = datetime.now()

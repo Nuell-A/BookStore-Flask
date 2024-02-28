@@ -44,11 +44,11 @@ def account():
         email = request.form['email']
         password = request.form['password']
 
-        user = users.get(email)
-        if user and user['password'] == password:
+        print(controller.checkUser(email, password))
+        '''if user and user['password'] == password:
             login_user(User(email))
             flash("Logged in successfully.")
-            return redirect(url_for('profile'))
+            return redirect(url_for('profile'))'''
         
     return render_template('account.html')
 
