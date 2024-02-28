@@ -7,16 +7,24 @@ sys.path.append(parent)
 import config
 
 
-# Initialize Flask application
-app = Flask(__name__)
-app.secret_key = config.app_secret_key
+try:
+    # Initialize Flask application
+    print("Initializing Flask application.")
+    app = Flask(__name__)
+    app.secret_key = config.app_secret_key
 
-# Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{config.sql_username}:{config.sql_pass}@localhost/{config.sql_db_name}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress SQLAlchemy deprecation warnings
+    print("Connecting to database.")
+    # Database Configuration
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{config.sql_username}:{config.sql_pass}@{config.sql_server}/book_store'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress SQLAlchemy deprecation warnings
 
-# Initialize SQLAlchemy extension
-db = SQLAlchemy(app)
+    # Initialize SQLAlchemy extension
+    db = SQLAlchemy(app)
+    print("Initialization complete...")
+except:
+    print("There was an error during initialization...")
+
+
 
 # Import routes and models (to avoid circular imports)
 from app import routes, models, controller

@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
-from . import app
-from . import controller
+from . import app, controller
 
+# Create login manager and give it the app context
 login_manager = LoginManager()
 login_manager.init_app(app)
 # Mock DB while I migrate SQL database to server (instead of laptop).
@@ -29,6 +29,7 @@ def cart():
     }
     return render_template('cart.html', context=context)
 
+# Represents User object.
 class User(UserMixin):
     def __init__(self, email):
         self.id = email
