@@ -20,7 +20,7 @@ def createBook(title: str, author_name: str, **kwargs):
     is_out = kwargs.get('is_out') # Default False
 
     # I'm not sure of description and is_out were passed.
-    book = Book(title=title, author_id=author.id, description=description, is_out=is_out)
+    book = Book(title=title, author_id=author.author_id, description=description, is_out=is_out)
     db.session.add(book)
     db.session.commit()
 

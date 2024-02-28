@@ -15,7 +15,7 @@ try:
 
     print("Connecting to database.")
     # Database Configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{config.sql_username}:{config.sql_pass}@{config.sql_server}/book_store'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{config.sql_username}:{config.sql_pass}@{config.sql_server}/{config.sql_db_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress SQLAlchemy deprecation warnings
 
     # Initialize SQLAlchemy extension
