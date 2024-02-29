@@ -1,8 +1,8 @@
-import random
 from . import db, app
 from .models import Book, Author, User, Checkout
 from datetime import datetime
-import csv
+from sqlalchemy.sql.expression import func
+import csv # Only needed sometimes when inputting test data. 
 
 app.app_context().push()
 
@@ -29,7 +29,7 @@ def createBook(title: str, author_name: str, **kwargs):
     print("Book entry created.")
 
 def getRandBooks(no_rows: int):
-    random_books = db.session.query(Book.title, Book.author_id, Book.description).limit(3).all()
+    random_books = db.session.query(Book.title, Book.author_id, Book.description).order_by(func.random()).limit(no_rows).all()
     
     random_books_finished = []
     for title, author_id, description in random_books:
@@ -63,12 +63,15 @@ def createUser(name: str, plaintext_pwrd: str):
 def checkUser(email: str, plaintext_pwrd: str):
     user = User.query.filter_by(name=email).first()
     if not user:
-        return f"No user account for {email} found."
+        print(f"No user account for {email} found.")
+        return False
     
     if user.verifyPassword(plaintext_pwrd):
-        return "Successfully logged in."
+        print("Successfully logged in.")
+        return True
     else:
-        return "Check credentials and try again."
+        print("Check credentials and try again.")
+        return False
 
 def createCheckout(user_name: str, book_title: str):
     '''Sets checkout date and grabs instances of User and Book for ID. Adds it'''

@@ -38,18 +38,27 @@ class User(UserMixin):
 def loadUser(user_id):
     return User(user_id)
         
-@app.route('/account', methods=['GET', 'POST'])
-def account():
+@app.route('/account-login', methods=['GET', 'POST'])
+def accountLogin():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
-        print(controller.checkUser(email, password))
+        is_correct = controller.checkUser(email, password)
+        if is_correct:
+            print("Redirecting URL")
+            return redirect(url_for('profile'))
+        else:
+            return redirect(url_for('accountLogin'))
         '''if user and user['password'] == password:
             login_user(User(email))
             flash("Logged in successfully.")
             return redirect(url_for('profile'))'''
         
+    return render_template('account_login.html')
+
+@app.route('/account')
+def account():
     return render_template('account.html')
 
 @app.route('/account/create')
@@ -58,4 +67,4 @@ def accountCreate():
 
 @app.route('/profile')
 def profile():
-    return render_template('account_create.html')
+    return render_template('profile.html')

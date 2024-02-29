@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-5 col-lg-4 col-md-4 mt-5 login">
                 <h2>Login or create an account.</h2>
-                <form action="{{ url_for('account') }}" method="post">
+                <form action="{{ url_for('accountLogin') }}" method="post">
                     <div class="mb-3">
                       <label for="input_email" class="form-label">Email address</label>
                       <input type="email" name="email" class="form-control" id="input_email" aria-describedby="emailHelp">
@@ -22,7 +22,7 @@
             </div>
             <div class="col-4 col-lg-3 col-md-3 mt-5 me-5 create-account">
                 <h2>Don't have an account?</h2>
-                <a href="account/create" class="btn btn-light">Create an Account</a>
+                <a href="{{ url_for('accountCreate') }}" class="btn btn-light">Create an Account</a>
             </div>
         </div>
     </div>
