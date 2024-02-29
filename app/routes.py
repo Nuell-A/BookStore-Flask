@@ -14,7 +14,7 @@ users = {
 @app.route('/', methods=['GET'])
 def index():
     search = request.args.get('search')
-    search_results = ["Lion King", "Spirit of the Stallion", "Suuuppppperrrrr long name for testing purposes"]
+    search_results = controller.getRandBooks(3)
     context = {
         "search": search,
         "search_results": search_results

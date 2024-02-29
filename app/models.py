@@ -13,7 +13,7 @@ class Book(db.Model):
     is_out = db.Column(db.Boolean, default=False)
 
     def __repr__(self) -> str:
-        return f"Book('{self.title}', '{self.author_id}', '{self.is_out}')"
+        return f"{self.title}, {self.author_id}, {self.description}, {self.is_out}"
 
 class Author(db.Model):
     __tablename__ = "authors"

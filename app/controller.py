@@ -1,6 +1,8 @@
+import random
 from . import db, app
 from .models import Book, Author, User, Checkout
 from datetime import datetime
+import csv
 
 app.app_context().push()
 
@@ -25,6 +27,25 @@ def createBook(title: str, author_name: str, **kwargs):
     db.session.commit()
 
     print("Book entry created.")
+
+def getRandBooks(no_rows: int):
+    random_books = db.session.query(Book.title, Book.author_id, Book.description).limit(3).all()
+    
+    random_books_finished = []
+    for title, author_id, description in random_books:
+        author = Author.query.filter_by(author_id=author_id).first()
+        author_name = author.name
+        random_books_finished.append((title, author_name, description))
+
+    print(random_books_finished)
+    return random_books_finished
+
+def checkBool(is_out):
+    '''Created to check if string from CSV file is True/False.'''
+    if is_out == "False":
+        return False
+    elif is_out == "True":
+        return True
 
 def createAuthor(name: str):
     '''Creates author'''
@@ -58,3 +79,13 @@ def createCheckout(user_name: str, book_title: str):
     checkout = Checkout(user_id=user.id, book_id=book.id, checkout_date=checkout_date)
     db.session.add(checkout)
     db.session.commit()
+
+'''with open('app\\static\\assets\\testbooks.csv') as file:
+    file_reader = csv.reader(file, delimiter=",")
+    for row in file_reader:
+        title = row[0]
+        author = row[1]
+        description = row[2]
+        is_out = checkBool(row[3])
+        
+        createBook(title, author, description=description, is_out=is_out)'''

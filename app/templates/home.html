@@ -16,9 +16,9 @@
                         {% for result in context.search_results %}
                             <div class="d-flex justify-content-between">
                                 <div class="card rounded list-group-item mt-1 mb-2">
-                                    <h6 class="card-title">{{ result }}</h6>
-                                    <p class="card-text text-secondary">Author</p>
-                                    <p class="card-text">Description of book</p>
+                                    <h6 class="card-title">{{ result[0] }}</h6>
+                                    <p class="card-text text-secondary">{{ result[1] }}</p>
+                                    <p class="card-text">{{ result[2] }}</p>
                                 </div>
                                 <button class="btn btn-light btn-sm add-to-cart-btn ms-1 mt-4">Add to Cart</button>
                             </div>
