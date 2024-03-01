@@ -30,8 +30,8 @@ def createBook(title: str, author_name: str, **kwargs):
 
 def getRandBooks(no_rows: int):
     '''Gets random x amount of rows.'''
-    # Queries db for rows
-    random_books = db.session.query(Book.title, Book.author_id, Book.description).order_by(func.random()).limit(no_rows).all()
+    # Queries db for rows (only books that are not checked out)
+    random_books = db.session.query(Book.title, Book.author_id, Book.description).filter(Book.is_out==False).order_by(func.random()).limit(no_rows).all()
     
     # List for row of books but with author name in place of author id.
     random_books_finished = []
