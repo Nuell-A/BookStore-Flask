@@ -21,7 +21,7 @@ def createBook(title: str, author_name: str, **kwargs):
     description = kwargs.get('description') # Can be null
     is_out = kwargs.get('is_out') # Default False
 
-    # I'm not sure of description and is_out were passed.
+    # Creates entry, adds, and commits.
     book = Book(title=title, author_id=author.author_id, description=description, is_out=is_out)
     db.session.add(book)
     db.session.commit()
@@ -29,15 +29,17 @@ def createBook(title: str, author_name: str, **kwargs):
     print("Book entry created.")
 
 def getRandBooks(no_rows: int):
+    '''Gets random x amount of rows.'''
+    # Queries db for rows
     random_books = db.session.query(Book.title, Book.author_id, Book.description).order_by(func.random()).limit(no_rows).all()
     
+    # List for row of books but with author name in place of author id.
     random_books_finished = []
     for title, author_id, description in random_books:
         author = Author.query.filter_by(author_id=author_id).first()
         author_name = author.name
         random_books_finished.append((title, author_name, description))
-
-    print(random_books_finished)
+    
     return random_books_finished
 
 def checkBool(is_out):
@@ -61,6 +63,8 @@ def createUser(name: str, plaintext_pwrd: str):
     db.session.commit()
 
 def checkUser(email: str, plaintext_pwrd: str):
+    '''Queries database for the email input. If there is a match, 
+    then it tests the plaintext against the hashed in the database.'''
     user = User.query.filter_by(name=email).first()
     if not user:
         print(f"No user account for {email} found.")

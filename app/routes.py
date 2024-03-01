@@ -1,15 +1,10 @@
 from flask import redirect, render_template, request, url_for, flash
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from . import app, controller
 
 # Create login manager and give it the app context
 login_manager = LoginManager()
 login_manager.init_app(app)
-# Mock DB while I migrate SQL database to server (instead of laptop).
-users = {
-    "nuell01@test.com": {"email": "nuell01@test.com", "password": "password1"},
-    "nuell02@test.com": {"email": "nuell02@test.com", "password": "password2"},
-}
 
 @app.route('/', methods=['GET'])
 def index():
@@ -40,6 +35,7 @@ def loadUser(user_id):
         
 @app.route('/account-login', methods=['GET', 'POST'])
 def accountLogin():
+    '''If request is POST, it checks if login credentials were correct'''
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -47,24 +43,26 @@ def accountLogin():
         is_correct = controller.checkUser(email, password)
         if is_correct:
             print("Redirecting URL")
-            return redirect(url_for('profile'))
-        else:
-            return redirect(url_for('accountLogin'))
-        '''if user and user['password'] == password:
             login_user(User(email))
             flash("Logged in successfully.")
-            return redirect(url_for('profile'))'''
-        
+            return redirect(url_for('profile'))
+        else:
+            flash("Check your credentials.")
+            return redirect(url_for('accountLogin'))
     return render_template('account_login.html')
 
-@app.route('/account')
-def account():
-    return render_template('account.html')
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out!")
+    return redirect(url_for('accountLogin'))
 
 @app.route('/account/create')
 def accountCreate():
     return render_template('account_create.html')
 
 @app.route('/profile')
+@login_required
 def profile():
-    return render_template('profile.html')
+    return render_template('profile.html', user=current_user.id)

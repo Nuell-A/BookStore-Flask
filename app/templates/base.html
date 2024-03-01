@@ -16,7 +16,11 @@
                 </div>
                 <div class="navbar-right">
                     <a href="/cart" class="cart-button text-light me-2">Cart</a>
-                    <a href="/account-login" class="account_button text-light me-2">Account</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('profile') }}" class="profile_button text-light me-2">Profile</a>
+                    {% else %}
+                        <a href="{{ url_for('accountLogin') }}" class="account_button text-light me-2">Login</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>

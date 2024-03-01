@@ -7,10 +7,11 @@
         <div class="row justify-content-center">
             <div class="col-5 col-lg-4 col-md-4 mt-5 login">
                 <h2>SUCCESSFULLY LOGGED IN</h2>
+                <p>Welcome {{ user }}</p>
             </div>
             <div class="col-4 col-lg-3 col-md-3 mt-5 me-5 create-account">
                 <h2>Logout</h2>
-                <a href="{{ url_for('accountLogin') }}" class="btn btn-light">Logout</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-light">Logout</a>
             </div>
         </div>
     </div>

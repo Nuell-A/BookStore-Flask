@@ -5,6 +5,7 @@ from . import db, app
 app.app_context().push()
 
 class Book(db.Model):
+    '''Creates books table in DB'''
     __tablename__ = "books"
     book_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -16,6 +17,7 @@ class Book(db.Model):
         return f"{self.title}, {self.author_id}, {self.description}, {self.is_out}"
 
 class Author(db.Model):
+    '''Creates authors table'''
     __tablename__ = "authors"
     author_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -24,6 +26,7 @@ class Author(db.Model):
         return f"Author('{self.name}')"
 
 class User(db.Model):
+    '''Creates users table'''
     __tablename__ = "users"
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -32,7 +35,7 @@ class User(db.Model):
     # Defining CryptContext
     pswd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-    # Defining hybrid property for set/get of _password (private attribute).
+    # Defining hybrid property for get/set of _password (private attribute).
     @hybrid_property
     def password(self):
         return self._password
@@ -50,6 +53,7 @@ class User(db.Model):
     
 
 class Checkout(db.Model):
+    '''Creates checkouts table.'''
     __tablename__ = "checkouts"
     checkout_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
