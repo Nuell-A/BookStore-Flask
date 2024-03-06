@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for, flash
+from flask import redirect, render_template, request, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from . import app, controller
 
@@ -16,13 +16,38 @@ def index():
     }
     return render_template('home.html', context=context)
 
+@app.route('/add-to-cart', methods=['POST'])
+def addToCart():
+    data = request.json
+    print(data)
+    book = {
+        'book_title': data['book_title'], 
+        'book_author': data['book_author'], 
+        'book_description': data['book_description']
+    }
+    print(book)
+    cart = session.get('cart', [])
+    cart.append(book)
+    session['cart'] = cart
+
+    return "Book added to cart", 200
+
 @app.route('/cart')
 def cart():
-    items_in_cart = ["Lion King", "Spirit of the Stallion", "Suuuppppperrrrr long name for testing purposes"]
+    items_in_cart = session.get('cart', [])
+    print(items_in_cart)
+    recommended_books = controller.getRandBooks(4)
     context = {
-        "items_in_cart": items_in_cart
+        "items_in_cart": items_in_cart,
+        "recommended_books": recommended_books,
     }
     return render_template('cart.html', context=context)
+
+@app.route('/checkout')
+def checkout():
+    cart = session.pop('cart', [])
+    # Process checkout, update database, etc.
+    return 'Checkout complete'
 
 # Represents User object.
 class User(UserMixin):

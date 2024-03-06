@@ -12,9 +12,9 @@
                         {% for item in context.items_in_cart %}
                             <div class="ms-1">
                                 <div class="card list-group-item mt-1 mb-1">
-                                    <h6 class="card-title">{{ item }}</h6>
-                                    <p class="card-text text-secondary">Author</p>
-                                    <p class="card-text">Description of book</p>
+                                    <h6 class="card-title">{{ item['book_title'] }}</h6>
+                                    <p class="card-text text-secondary">{{ item['book_author'] }}</p>
+                                    <p class="card-text">{{ item['book_description'] }}</p>
                                 </div>
                             </div>
                         {% endfor %}
@@ -24,12 +24,12 @@
                 <div class="col-md-4 mx-auto">
                     <h2>Recommended books</h2>
                     <ul class="list-group">
-                        {% for item in context.items_in_cart %}
-                            <div class="ms-1">
-                                <div class="card list-group-item mt-1 mb-1">
-                                    <h6 class="card-title">{{ item }}</h6>
-                                    <p class="card-text text-secondary">Author</p>
-                                    <p class="card-text">Description of book</p>
+                        {% for result in context.recommended_books %}
+                            <div class="d-flex justify-content-between">
+                                <div class="card rounded list-group-item mt-1 mb-2">
+                                    <h6 class="card-title">{{ result[0] }}</h6>
+                                    <p class="card-text text-secondary">{{ result[1] }}</p>
+                                    <p class="card-text">{{ result[2] }}</p>
                                 </div>
                             </div>
                         {% endfor %}
@@ -42,8 +42,19 @@
                     <div class="col-2 mx-auto">
                         <p>No items in your cart yet!</p>
                     </div>
-                    <div class="col-md-5 mx-auto">
-                        <p>Recommended books</p>
+                    <div class="col-md-4 mx-auto">
+                        <h2>Recommended books</h2>
+                        <ul class="list-group">
+                            {% for result in context.recommended_books %}
+                                <div class="d-flex justify-content-between">
+                                    <div class="card rounded list-group-item mt-1 mb-2">
+                                        <h6 class="card-title">{{ result[0] }}</h6>
+                                        <p class="card-text text-secondary">{{ result[1] }}</p>
+                                        <p class="card-text">{{ result[2] }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@
                                     <p class="card-text text-secondary">{{ result[1] }}</p>
                                     <p class="card-text">{{ result[2] }}</p>
                                 </div>
-                                <button class="btn btn-light btn-sm add-to-cart-btn ms-1 mt-4">Add to Cart</button>
+                                <button class="btn btn-light btn-sm add-to-cart-btn ms-1 mt-4" data-title="{{result[0]}}" data-author="{{result[1]}}" data-description="{{result[2]}}">Add to Cart</button>
                             </div>
                         {% endfor %}
                     </ul>
