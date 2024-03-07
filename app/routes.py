@@ -1,6 +1,7 @@
 from flask import redirect, render_template, request, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from . import app, controller
+import json
 
 # Create login manager and give it the app context
 login_manager = LoginManager()
@@ -19,11 +20,10 @@ def index():
 @app.route('/add-to-cart', methods=['POST'])
 def addToCart():
     data = request.json
-    print(data)
     book = {
-        'book_title': data['book_title'], 
-        'book_author': data['book_author'], 
-        'book_description': data['book_description']
+        "book_title": data['book_title'], 
+        "book_author": data['book_author'], 
+        "book_description": data['book_description']
     }
     print(book)
     cart = session.get('cart', [])
@@ -43,11 +43,25 @@ def cart():
     }
     return render_template('cart.html', context=context)
 
-@app.route('/checkout')
+@app.route('/checkout', methods=['POST'])
 def checkout():
+    data = request.json
+    json_prep = data['books_in_cart']
+    json_format = json_prep.replace("'", '"')
+    books_in_cart = json.loads(json_format)
+    print(books_in_cart)
+    for item in books_in_cart:
+        book_title = item['book_title']
+        book_author = item['book_author']
+        controller.createCheckout(current_user.id, book_title, book_author)
+
     cart = session.pop('cart', [])
     # Process checkout, update database, etc.
-    return 'Checkout complete'
+    return 'Checkout complete', 200
+
+@app.route('/thank-you')
+def thankYou():
+    return render_template('thank_you.html')
 
 # Represents User object.
 class User(UserMixin):
@@ -90,4 +104,5 @@ def accountCreate():
 @app.route('/profile')
 @login_required
 def profile():
+    print(current_user.id)
     return render_template('profile.html', user=current_user.id)

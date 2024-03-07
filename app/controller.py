@@ -77,14 +77,24 @@ def checkUser(email: str, plaintext_pwrd: str):
         print("Check credentials and try again.")
         return False
 
-def createCheckout(user_name: str, book_title: str):
+def createCheckout(user_name: str, book_title: str, book_author: str):
     '''Sets checkout date and grabs instances of User and Book for ID. Adds it'''
     checkout_date = datetime.now()
     user = User.query.filter_by(name=user_name).first()
-    book = Book.query.filter_by(title=book_title).first()
+    author = Author.query.filter_by(name=book_author).first()
+    book = Book.query.filter_by(title=book_title).filter_by(author_id=author.author_id).first()
 
-    checkout = Checkout(user_id=user.id, book_id=book.id, checkout_date=checkout_date)
+    checkout = Checkout(user_id=user.user_id, book_id=book.book_id, checkout_date=checkout_date)
+    checkoutBook(book)
     db.session.add(checkout)
+    db.session.commit()
+
+def checkoutBook(book):
+    book.is_out = True
+    db.session.commit()
+
+def checkinBook(book):
+    book.is_out = False
     db.session.commit()
 
 '''with open('app\\static\\assets\\testbooks.csv') as file:
