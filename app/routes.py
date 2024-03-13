@@ -97,8 +97,19 @@ def logout():
     flash("Logged out!")
     return redirect(url_for('accountLogin'))
 
-@app.route('/account/create')
+@app.route('/account/create', methods=['GET', 'POST'])
 def accountCreate():
+    if request.method == 'POST':
+        try:
+            email = request.form['email']
+            password = request.form['password']
+
+            controller.createUser(email, password)
+            print(f"User {email} created")
+            return redirect(url_for('accountLogin'))
+        except:
+            print("Error creating account")
+            return redirect(url_for('accountCreate'))
     return render_template('account_create.html')
 
 @app.route('/profile')
