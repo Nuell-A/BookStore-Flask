@@ -10,10 +10,17 @@ login_manager.init_app(app)
 @app.route('/', methods=['GET'])
 def index():
     search = request.args.get('search')
-    search_results = controller.getRandBooks(3)
+    random_results = controller.getRandBooks(3)
+    search_results = []
+
+    # If user searches for something, query database.
+    if search:
+        search_results = controller.searchBooks(search)
+
     context = {
         "search": search,
-        "search_results": search_results
+        "search_results": search_results,
+        "random_results": random_results,
     }
     return render_template('home.html', context=context)
 

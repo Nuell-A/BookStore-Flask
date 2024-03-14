@@ -2,6 +2,7 @@ from . import db, app
 from .models import Book, Author, User, Checkout
 from datetime import datetime
 from sqlalchemy.sql.expression import func
+from sqlalchemy import or_
 import csv # Only needed sometimes when inputting test data. 
 
 app.app_context().push()
@@ -39,8 +40,13 @@ def getRandBooks(no_rows: int):
         author = Author.query.filter_by(author_id=author_id).first()
         author_name = author.name
         random_books_finished.append((title, author_name, description))
-    
     return random_books_finished
+
+def searchBooks(search: str):
+    '''Searches the database for books similar to search string from user.'''
+    # Using or_ from sqlalchemy to utilize OR statement in MySQL. Also joining Author table to access column (author name) and use it in HTML
+    search_results = db.session.query(Book, Author.name).join(Author, Book.author_id == Author.author_id).filter(or_(Book.title.ilike(f'%{search}%'), Author.name.ilike(f'%{search}%'), Book.description.ilike(f'%{search}%')), Book.is_out==False).all()
+    return search_results
 
 def checkBool(is_out):
     '''Created to check if string from CSV file is True/False.'''

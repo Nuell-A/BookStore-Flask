@@ -9,11 +9,26 @@
             <button type="submit" class="btn btn-light btn-sm col-md-2 col-sm-2 ms-1">Search</button>
         </form>
         <div class="search-results mt-3">
-            {% if context.search_results %}
+            {% if context.search %}
                 <h5 class="text-center">Search results for {{ context.search }}:</h5>
                 <div class="d-flex justify-content-center">
                     <ul class="list-group">
-                        {% for result in context.search_results %}
+                        {% for book, author in context.search_results %}
+                            <div class="d-flex justify-content-between">
+                                <div class="card rounded list-group-item mt-1 mb-2">
+                                    <h6 class="card-title">{{ book.title }}</h6>
+                                    <p class="card-text text-secondary">{{ author }}</p>
+                                    <p class="card-text">{{ book.description }}</p>
+                                </div>
+                                <button class="btn btn-light btn-sm add-to-cart-btn ms-1 mt-4" data-title="{{book.title}}" data-author="{{author}}" data-description="{{book.description}}">Add to Cart</button>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="d-flex justify-content-center">
+                    <ul class="list-group">
+                        {% for result in context.random_results %}
                             <div class="d-flex justify-content-between">
                                 <div class="card rounded list-group-item mt-1 mb-2">
                                     <h6 class="card-title">{{ result[0] }}</h6>
@@ -25,8 +40,6 @@
                         {% endfor %}
                     </ul>
                 </div>
-            {% else %}
-                <p>No search results for {{ context.search }}</p>
             {% endif %}
         </div>
     </main>
