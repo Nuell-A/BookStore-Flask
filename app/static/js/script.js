@@ -58,3 +58,35 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.send(JSON.stringify({ books_in_cart: books_in_cart }));
     }
 });
+
+// Return Book button in profile page.
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for the Checkout button
+    var returnBooksButtons = document.querySelectorAll('.return-book-btn');
+    for (var i = 0; i < returnBooksButtons.length; i++) {
+        returnBooksButtons[i].addEventListener('click', function() {
+        var book_title = this.dataset.title;
+        var book_description = this.dataset.description;
+        returnBook(book_title, book_description);
+        });
+    }
+    function returnBook(title, description) {
+        // Send an AJAX request to the server to process the checkout
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/return-book');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert('Sucessfully returned book!');
+                window.location.href = '/profile';
+            } else {
+                alert('Failed to return book.');
+            }
+        };
+        var data = {
+            "book_title": title,
+            "book_description": description,
+        };
+        xhr.send(JSON.stringify(data));
+    }
+});

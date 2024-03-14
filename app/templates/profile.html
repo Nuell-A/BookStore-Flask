@@ -6,8 +6,23 @@
     <div class="contain">
         <div class="row justify-content-center">
             <div class="col-5 col-lg-4 col-md-4 mt-5 login">
-                <h2>SUCCESSFULLY LOGGED IN</h2>
-                <p>Welcome {{ user }}</p>
+                <p>Welcome {{ context.user }}</p>
+                {% if context.checked_out_books %}
+                <div class="d-flex justify-content-center">
+                    <ul class="list-group">
+                        {% for book, author in context.checked_out_books %}
+                            <div class="d-flex justify-content-between">
+                                <div class="card rounded list-group-item mt-1 mb-2">
+                                    <h6 class="card-title">{{ book.title }}</h6>
+                                    <p class="card-text text-secondary">{{ author }}</p>
+                                    <p class="card-text">{{ book.description }}</p>
+                                </div>
+                                <button class="btn btn-light btn-sm return-book-btn ms-1 mt-4 mb-4" data-title="{{book.title}}" data-description="{{book.description}}">Return Book</button>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
             </div>
             <div class="col-4 col-lg-3 col-md-3 mt-5 me-5 create-account">
                 <h2>Logout</h2>

@@ -106,6 +106,7 @@ def logout():
 
 @app.route('/account/create', methods=['GET', 'POST'])
 def accountCreate():
+    '''User is able to create account through sign up page.'''
     if request.method == 'POST':
         try:
             email = request.form['email']
@@ -122,5 +123,22 @@ def accountCreate():
 @app.route('/profile')
 @login_required
 def profile():
-    print(current_user.id)
-    return render_template('profile.html', user=current_user.id)
+    '''Shows user currently checked out books.'''
+    checked_out_books = controller.checkUserBooks(current_user.id)
+    context = {
+        "user": current_user.id,
+        "checked_out_books": checked_out_books,
+    }
+    return render_template('profile.html', context=context)
+
+@app.route('/return-book', methods=['POST'])
+def returnBook():
+    data = request.json
+    title = data['book_title']
+    description = data['book_description']
+    controller.checkinBook(title, description)
+    controller.deleteCheckout(title, description, current_user.id)
+    print(data)
+
+    # Process checkout, update database, etc.
+    return 'Checkout complete', 200

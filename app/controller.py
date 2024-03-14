@@ -48,6 +48,18 @@ def searchBooks(search: str):
     search_results = db.session.query(Book, Author.name).join(Author, Book.author_id == Author.author_id).filter(or_(Book.title.ilike(f'%{search}%'), Author.name.ilike(f'%{search}%'), Book.description.ilike(f'%{search}%')), Book.is_out==False).all()
     return search_results
 
+def checkUserBooks(user: str):
+    user = User.query.filter_by(name=user).first()
+    checked_out_books = (
+        db.session.query(Book, Author.name)
+        .join(Checkout, Book.book_id == Checkout.book_id)
+        .join(Author, Book.author_id == Author.author_id)
+        .filter(Checkout.user_id == user.user_id)
+        .all()
+    )
+
+    return checked_out_books
+
 def checkBool(is_out):
     '''Created to check if string from CSV file is True/False.'''
     if is_out == "False":
@@ -91,17 +103,40 @@ def createCheckout(user_name: str, book_title: str, book_author: str):
     book = Book.query.filter_by(title=book_title).filter_by(author_id=author.author_id).first()
 
     checkout = Checkout(user_id=user.user_id, book_id=book.book_id, checkout_date=checkout_date)
-    checkoutBook(book)
+    checkoutBook(book.title, book.description)
     db.session.add(checkout)
     db.session.commit()
 
-def checkoutBook(book):
+def checkoutBook(book_title: str, book_description: str):
+    book = Book.query.filter_by(title=book_title).filter_by(description=book_description).first()
     book.is_out = True
     db.session.commit()
 
-def checkinBook(book):
+def checkinBook(book_title: str, book_description: str):
+    book = Book.query.filter_by(title=book_title).filter_by(description=book_description).first()
+    print(book)
     book.is_out = False
     db.session.commit()
+
+def deleteCheckout(book_title: str, book_description: str, username: str):
+        book = Book.query.filter_by(title=book_title).filter_by(description=book_description).first()
+        user = User.query.filter_by(name=username).first()
+        try:
+            checkout_entry = (
+                db.session.query(Checkout)
+                .filter_by(user_id=user.user_id, book_id=book.book_id)
+                .first()
+            )
+            if checkout_entry:
+                db.session.delete(checkout_entry)
+                db.session.commit()
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(f"Error: {e}")
+            db.session.rollback()
+            return False
 
 '''with open('app\\static\\assets\\testbooks.csv') as file:
     file_reader = csv.reader(file, delimiter=",")
